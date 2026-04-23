@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Warpnet</title>
+<link rel="stylesheet" href="warpnet.css">
+</head>
+
+<body class="body">
+
+<div class="bar">  
+  <h2 class="text">Warpnet</h2>
+</div>
+
+<div class="layout-buttons">  
+
+<button onclick="setLevel(1)" class="lvl1">DEFCON 1</button>
+<button onclick="setLevel(2)" class="lvl2">DEFCON 2</button>
+<button onclick="setLevel(3)" class="lvl3">DEFCON 3</button>
+<button onclick="setLevel(4)" class="lvl4">DEFCON 4</button>
+<button onclick="setLevel(5)" class="lvl5">DEFCON 5</button>
+
+</div>
+
+<br>
+
+<input id="msg" placeholder="Bericht">
+<button onclick="sendMsg()">Send</button>
+
+<script>
+async function setLevel(level){
+  try {
+    await fetch("/alert", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({level: level})
+    });
+  } catch(e){
+    console.log("error", e);
+  }
+}
+
+async function sendMsg(){
+  const msg = document.getElementById("msg").value;
+
+  try {
+    await fetch("/message", {
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({message: msg})
+    });
+  } catch(e){
+    console.log("error", e);
+  }
+}
+</script>
+
+</body>
+</html>
